@@ -125,6 +125,43 @@ class Test:
             print('queryDevice success ',result)
         else:
             print ('queryDevice failed , errorMessage=' + result_json['ErrorMessage'] + ', requestId=' + result_json['RequestId'])
+			
+
+	def queryDevicePropTest(self,productKey,deviceName):
+        request = QueryDevicePropRequest.QueryDevicePropRequest()
+        request.set_ProductKey(productKey)
+        request.set_DeviceName(deviceName)
+        result = self.clt.do_action_with_exception(request)
+        result_json = json.JSONDecoder().decode(result)
+        if result_json['Success']:
+            print 'result:' + result
+        else:
+            print ('queryDevice failed , errorMessage=' + result_json['ErrorMessage'] + ', requestId=' + result_json['RequestId'])
+
+    def saveDevicePropTest(self,productKey,deviceName):
+        request = SaveDevicePropRequest.SaveDevicePropRequest()
+        request.set_ProductKey(productKey)
+        request.set_DeviceName(deviceName)
+        request.set_Props('{"temperature":"37","color":"green"}')
+        result = self.clt.do_action_with_exception(request)
+        result_json = json.JSONDecoder().decode(result)
+        if result_json['Success']:
+            print 'result:' + result
+        else:
+            print ('saveDevice failed , errorMessage=' + result_json['ErrorMessage'] + ', requestId=' + result_json['RequestId'])
+
+
+    def deleteDevicePropTest(self, productKey, deviceName):
+        request = DeleteDevicePropRequest.DeleteDevicePropRequest()
+        request.set_ProductKey(productKey)
+        request.set_DeviceName(deviceName)
+        request.set_PropKey("color")
+        result = self.clt.do_action_with_exception(request)
+        result_json = json.JSONDecoder().decode(result)
+        if result_json['Success']:
+            print 'result:' + result
+        else:
+            print ('saveDevice failed , errorMessage=' + result_json['ErrorMessage'] + ', requestId=' + result_json['RequestId'])
 
     def getDeviceShadowTest(self,productKey,deviceName):
         request = GetDeviceShadowRequest.GetDeviceShadowRequest()
@@ -205,4 +242,8 @@ if __name__ == '__main__':
     test.pubTest(productKey,deviceNames[0])
     test.pubBroadcastTest(productKey)
     test.rrpcTest(productKey,deviceNames[0])
+	 #新增接口 只支持华东2节点
+    test.saveDevicePropTest(productKey, deviceNames[0])
+    test.queryDevicePropTest(productKey, deviceNames[0])
+    test.deleteDevicePropTest(productKey, deviceNames[0])
 

@@ -1,20 +1,9 @@
 <?php
-/*
- * Copyright (c) 2014-2016 Alibaba Group. All rights reserved.
- * License-Identifier: Apache-2.0
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may
- * not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
+/**
+ * Created by PhpStorm.
+ * User: Iot
+ * Date: 2017/11/9
+ * Time: 15:16
  */
 require_once '../util/ClientUtil.php';
 require_once '../util/ServiceUtil.php';
@@ -195,6 +184,39 @@ class Test
         print_r($response);
     }
 
+    /**查询设备属性  -- 目前只有华东2支持*/
+    public function queryDevicePropTest($productKey, $deviceName)
+    {
+        $reuqest = new Iot\QueryDevicePropRequest();
+        $reuqest->setProductKey($productKey);
+        $reuqest->setDeviceName($deviceName);
+        $response = $this->client->getAcsResponse($reuqest);
+        print_r($response);
+    }
+
+    /**保存设备属性 -- 目前只有华东2支持*/
+    public function saveDevicePropTest($productKey, $deviceName)
+    {
+        $reuqest = new Iot\SaveDevicePropRequest();
+        $reuqest->setProductKey($productKey);
+        $reuqest->setDeviceName($deviceName);
+        $reuqest->setProps('{"temperature":"38","color":"red"}');
+        $response = $this->client->getAcsResponse($reuqest);
+        print_r($response);
+
+    }
+
+    /**删除设备属性  -- 目前只有华东2支持*/
+    public function deleteDevicePropTest($productKey, $deviceName)
+    {
+        $request = new Iot\DeleteDevicePropRequest();
+        $request->setProductKey($productKey);
+        $request->setDeviceName($deviceName);
+        $request->setPropKey("temperature");
+        $response = $this->client->getAcsResponse($request);
+        print_r($response);
+    }
+
     /**
      * 发送消息
      * @param $productKey
@@ -236,7 +258,7 @@ class Test
 
 
     /**
-     * rrpc请求 需要配合设备端一同使用才会成功
+     * rrpc请求  需要配合设备端一同使用才会成功
      * @param $productKey
      * @param $deviceName
      */
@@ -270,4 +292,6 @@ $t->getDeviceShadowTest($productKey,$deviceName);
 $t->pubTest($productKey, $deviceName);
 $t->pubBroadcastTest($productKey);
 $t->rrpcTest($productKey, $deviceName);
-
+$t->saveDevicePropTest($productKey,$deviceName);
+$t->queryDevicePropTest($productKey,$deviceName);
+$t->deleteDevicePropTest($productKey,$deviceName);

@@ -18,12 +18,12 @@
 
 package com.aliyun.iot.demo;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.alibaba.common.lang.StringUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
@@ -35,6 +35,8 @@ import com.aliyuncs.iot.model.v20170420.BatchGetDeviceStateRequest;
 import com.aliyuncs.iot.model.v20170420.BatchGetDeviceStateResponse;
 import com.aliyuncs.iot.model.v20170420.CreateProductRequest;
 import com.aliyuncs.iot.model.v20170420.CreateProductResponse;
+import com.aliyuncs.iot.model.v20170420.DeleteDevicePropRequest;
+import com.aliyuncs.iot.model.v20170420.DeleteDevicePropResponse;
 import com.aliyuncs.iot.model.v20170420.GetDeviceShadowRequest;
 import com.aliyuncs.iot.model.v20170420.GetDeviceShadowResponse;
 import com.aliyuncs.iot.model.v20170420.PubBroadcastRequest;
@@ -45,6 +47,8 @@ import com.aliyuncs.iot.model.v20170420.QueryApplyStatusRequest;
 import com.aliyuncs.iot.model.v20170420.QueryApplyStatusResponse;
 import com.aliyuncs.iot.model.v20170420.QueryDeviceByNameRequest;
 import com.aliyuncs.iot.model.v20170420.QueryDeviceByNameResponse;
+import com.aliyuncs.iot.model.v20170420.QueryDevicePropRequest;
+import com.aliyuncs.iot.model.v20170420.QueryDevicePropResponse;
 import com.aliyuncs.iot.model.v20170420.QueryDeviceRequest;
 import com.aliyuncs.iot.model.v20170420.QueryDeviceResponse;
 import com.aliyuncs.iot.model.v20170420.QueryPageByApplyIdRequest;
@@ -53,6 +57,8 @@ import com.aliyuncs.iot.model.v20170420.RRpcRequest;
 import com.aliyuncs.iot.model.v20170420.RRpcResponse;
 import com.aliyuncs.iot.model.v20170420.RegistDeviceRequest;
 import com.aliyuncs.iot.model.v20170420.RegistDeviceResponse;
+import com.aliyuncs.iot.model.v20170420.SaveDevicePropRequest;
+import com.aliyuncs.iot.model.v20170420.SaveDevicePropResponse;
 import com.aliyuncs.iot.model.v20170420.UpdateDeviceShadowRequest;
 import com.aliyuncs.iot.model.v20170420.UpdateDeviceShadowResponse;
 import com.aliyuncs.iot.model.v20170420.UpdateProductRequest;
@@ -74,7 +80,7 @@ public class Test extends BaseTest {
         String deviceName = "device";
 
         //注册单个设备
-        registDeviceTest(productKey, deviceName);
+        registDeviceTest("fOAt5H5TOWF", deviceName);
 
         //查询单个设备信息
         queryDeviceByNameTest(productKey, deviceName);
@@ -108,6 +114,13 @@ public class Test extends BaseTest {
 
         //更新影子信息
         updateDeviceShadowTest(productKey, deviceName);
+        
+        //设置设备属性
+        saveDevicePropTest(productKey, deviceName);
+        //删除设备属性
+        deleteDevicePropTest(productKey, deviceName);
+        //查询设备属性
+        queryDevicePropTest(productKey, deviceName);
 
     }
 
@@ -377,7 +390,7 @@ public class Test extends BaseTest {
         if (response != null && response.getSuccess() != false) {
             LogUtil.print("获取设备影子成功！shadowMessage:" + response.getShadowMessage());
             //如果影子内容不为空，获取版本信息
-            if (StringUtil.isNotBlank(response.getShadowMessage())) {
+            if (response.getShadowMessage() != null	) {
                 JSONObject shadowObject = JSONObject.parseObject(response.getShadowMessage());
                 shadowVersion = shadowObject.getLong("version");
             }
@@ -411,6 +424,52 @@ public class Test extends BaseTest {
             LogUtil.print("更新设备影子成功！");
         } else {
             LogUtil.error("更新设备影子失败！requestId:" + response.getRequestId() + "原因：" + response.getErrorMessage());
+
+        }
+    }
+    
+    
+    public static void saveDevicePropTest(String productKey, String deviceName){
+    	SaveDevicePropRequest request = new SaveDevicePropRequest();
+    	request.setProductKey(productKey);
+    	request.setDeviceName(deviceName);
+    	Map<String, Object> props = new HashMap<String, Object>();
+    	props.put("temperature", "38");
+    	props.put("features", "{\"color\":\"red\"}");
+    	request.setProps(JSON.toJSONString(props));
+    	SaveDevicePropResponse response = (SaveDevicePropResponse) executeTest(request);
+    	 if (response != null && response.getSuccess() != false) {
+             LogUtil.print("保存设备属性成功！");
+         } else {
+             LogUtil.error("保存设备属性失败！requestId:" + response.getRequestId() + "原因：" + response.getErrorMessage());
+
+         }
+    }
+    
+    public static void deleteDevicePropTest(String productKey, String deviceName){
+    	DeleteDevicePropRequest request = new DeleteDevicePropRequest();
+    	request.setProductKey(productKey);
+    	request.setDeviceName(deviceName);
+    	request.setPropKey("temperature");
+    	DeleteDevicePropResponse response = (DeleteDevicePropResponse) executeTest(request);
+    	if (response != null && response.getSuccess() != false) {
+            LogUtil.print("删除设备属性成功！");
+        } else {
+            LogUtil.error("删除设备属性失败！requestId:" + response.getRequestId() + "原因：" + response.getErrorMessage());
+
+        }
+    	
+    }
+    private static void queryDevicePropTest(String productKey, String deviceName){
+    	QueryDevicePropRequest request = new QueryDevicePropRequest();
+    	request.setProductKey(productKey);
+    	request.setDeviceName(deviceName);
+    	QueryDevicePropResponse response = (QueryDevicePropResponse) executeTest(request);
+    	if (response != null && response.getSuccess() != false) {
+            LogUtil.print("查询设备属性成功！属性信息：" + response.getProps());
+            
+        } else {
+            LogUtil.error("查询设备属性失败！requestId:" + response.getRequestId() + "原因：" + response.getErrorMessage());
 
         }
     }
