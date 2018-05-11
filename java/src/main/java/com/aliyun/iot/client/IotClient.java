@@ -41,7 +41,7 @@ public class IotClient {
 			regionId = prop.getProperty("iot.regionId");
 
 			IClientProfile profile = DefaultProfile.getProfile(regionId, accessKeyID, accessKeySecret);
-			DefaultProfile.addEndpoint(regionId, regionId, prop.getProperty("iot.productKey"),
+			DefaultProfile.addEndpoint(regionId, regionId, prop.getProperty("iot.productCode"),
 					prop.getProperty("iot.domain"));
 			// 初始化client
 			client = new DefaultAcsClient(profile);

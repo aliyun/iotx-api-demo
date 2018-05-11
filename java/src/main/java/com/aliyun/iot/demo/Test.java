@@ -80,7 +80,7 @@ public class Test extends BaseTest {
         String deviceName = "device";
 
         //注册单个设备
-        registDeviceTest("fOAt5H5TOWF", deviceName);
+        registDeviceTest(productKey, deviceName);
 
         //查询单个设备信息
         queryDeviceByNameTest(productKey, deviceName);
