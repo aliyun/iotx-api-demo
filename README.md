@@ -1,2 +1,2 @@
 # iotx-api-demo
-IoT套件服务端API使用demo，包含JAVA、Python、PHP、.Net四种语言
+阿里云物联网平台提供云端SDK使用Demo。Demo中包含Java、Python、PHP、.NET、Go版本SDK。
