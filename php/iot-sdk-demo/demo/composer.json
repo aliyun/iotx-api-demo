@@ -1,0 +1,13 @@
+{
+  "config": {
+    "optimize-autoloader": true
+  },
+  "require": {
+    "alibabacloud/iot": "^1.7",
+    "alibabacloud/sdk": "^1.7",
+    "ext-json": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^6.2"
+  }
+}
