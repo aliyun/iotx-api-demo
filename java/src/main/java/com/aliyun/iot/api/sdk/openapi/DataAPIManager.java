@@ -33,7 +33,7 @@ public class DataAPIManager extends AbstractManager {
 
         request.setApiPath(apiPath);
         request.setDisplayName(displayName);
-        request.setFolderId(folderId);
+        //request.setFolderId(folderId);
         request.setDesc(desc);
         request.setOriginSql(originSql);
         request.setTemplateSql(templateSql);

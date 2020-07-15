@@ -8,6 +8,24 @@
 	<dependencies>
 
 		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>6.8.5</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.aliyun.datahub</groupId>
+			<artifactId>aliyun-sdk-datahub</artifactId>
+			<version>2.9.2-public</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>gson</artifactId>
+					<groupId>com.google.code.gson</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
@@ -22,12 +40,13 @@
 		<dependency>
 			<groupId>com.aliyun</groupId>
 			<artifactId>aliyun-java-sdk-core</artifactId>
-			<version>3.5.1</version>
+			<optional>true</optional>
+			<version>[4.3.2,5.0.0)</version>
 		</dependency>
 		<dependency>
 			<groupId>com.aliyun</groupId>
 			<artifactId>aliyun-java-sdk-iot</artifactId>
-			<version>5.0.0</version>
+			<version>[5.0.0,7.10.0]</version>
 		</dependency>
 
 		<dependency>

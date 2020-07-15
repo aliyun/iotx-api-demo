@@ -18,6 +18,10 @@
 
 package com.aliyun.iot.util;
 
+
+import com.alibaba.fastjson.JSON;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -31,14 +35,30 @@ public class ServiceUtil {
 	 */
 	public static String productNameGenerator() {
 		int length = 4;
-		Random random = new Random();     
-	    StringBuffer sb = new StringBuffer(); 
-	    sb.append("product_");
-	    for (int i = 0; i < length; i++) {     
-	        int number = random.nextInt(base.length());     
-	        sb.append(base.charAt(number));     
-	    }     
-	    return sb.toString();     
+		Random random = new Random();
+	    StringBuffer sb = new StringBuffer();
+	    sb.append("product");
+	    for (int i = 0; i < length; i++) {
+	        int number = random.nextInt(base.length());
+	        sb.append(base.charAt(number));
+	    }
+	    return sb.toString();
+	}
+
+	/**
+	 * 随机生成分组名称
+	 * @return
+	 */
+	public static String groupNameGenerator() {
+		int length = 4;
+		Random random = new Random();
+		StringBuffer sb = new StringBuffer();
+		sb.append("group");
+		for (int i = 0; i < length; i++) {
+			int number = random.nextInt(base.length());
+			sb.append(base.charAt(number));
+		}
+		return sb.toString();
 	}
 	
 	/**
@@ -61,5 +81,6 @@ public class ServiceUtil {
 		}
 		return nameList;
 	}
+
 
 }
